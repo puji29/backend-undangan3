@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Resepsi;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 
 class ReservasiController extends Controller
@@ -12,7 +13,7 @@ class ReservasiController extends Controller
     public function index()
     {
 
-        $reservasi = Resepsi::latest()->paginate(5);
+        $reservasi = Resepsi::latest()->paginate(10);
 
         return new PostResource(true, 'Data reservasi found', $reservasi);
     }
@@ -45,5 +46,43 @@ class ReservasiController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function show( $id) {
+        $reservasi = Resepsi::find($id);
+
+        return new PostResource(true, 'Id found', $reservasi);
+    }
+
+    public function update(Request $request,$id)  {
+
+        $validator = Validator($request->all(),[
+            'name' => 'required',
+            'jumlah' => 'required',
+            'status' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors(),422);
+        }
+        
+        $reservasi = Resepsi::find($id);
+
+        $reservasi->update([
+            'name' => $request->name,
+            'jumlah' => $request->jumlah,
+            'status' => $request->status,
+        ]);
+
+        return new PostResource(true, 'Data update succesfully',$reservasi);
+    }
+
+    public function destroy($id) {
+
+        $reservasi = Resepsi::find($id);
+
+        $reservasi->delete();
+
+        return new PostResource(true, "Data succesfully delete", null);
     }
 }

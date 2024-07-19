@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ReservasiController;
+use App\Http\Controllers\Api\UcapanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +10,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::apiResource('/reservasis',ReservasiController::class);
+Route::apiResource('/ucapans',UcapanController::class);
