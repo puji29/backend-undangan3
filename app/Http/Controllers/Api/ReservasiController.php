@@ -13,7 +13,7 @@ class ReservasiController extends Controller
     public function index()
     {
 
-        $reservasi = Resepsi::latest()->paginate(10);
+        $reservasi = Resepsi::latest()->paginate();
 
         return new PostResource(true, 'Data reservasi found', $reservasi);
     }

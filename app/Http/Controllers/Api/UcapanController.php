@@ -41,4 +41,42 @@ class UcapanController extends Controller
             ], 500);
         }
     }
+
+    public function show( $id) {
+        $ucapan = Ucapan::find($id);
+
+        return new PostResource(true, 'Id found', $ucapan);
+    }
+
+    public function update(Request $request,$id)  {
+
+        $validator = Validator($request->all(),[
+            'name' => 'required',
+            'ucapan' => 'required',
+            
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors(),422);
+        }
+        
+        $ucapan = Ucapan::find($id);
+
+        $ucapan->update([
+            'name' => $request->name,
+            'ucapan' => $request->ucapan,
+            
+        ]);
+
+        return new PostResource(true, 'Data update succesfully',$ucapan);
+    }
+
+    public function destroy($id) {
+
+        $ucapan = Ucapan::find($id);
+
+        $ucapan->delete();
+
+        return new PostResource(true, "Data succesfully delete", null);
+    }
 }
