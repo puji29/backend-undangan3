@@ -49,4 +49,26 @@ class AuthController extends Controller
 
         ];
     }
+
+    public function userprofile() {
+        $userData = auth()->user();
+
+        return response()->json([
+            'status'=> true,
+            'message'=> 'User login profile',
+            'data'=> $userData,
+            'id'=> auth()->user()->id,
+        
+        ],200);
+    }
+
+    public function logout() {
+        auth()->user()->tokens()->delete();
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Logout succes',
+            'data' => []
+        ], 200);
+    }
 }
